@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "./components/ui/button";
 import { Input } from "./components/ui/input";
@@ -18,11 +18,21 @@ export default function App() {
 
     let totalSold = 0;
     let totalOnShip = 0;
-    console.log(quotas);
+
     quotas.forEach((quota) => {
         totalSold += quota.sold;
         totalOnShip += quota.day1 + quota.day2 + quota.day3 - quota.sold;
     });
+
+    useEffect(() => {
+        let stored = localStorage.getItem("quotas");
+        setQuotas((prev) => (stored ? JSON.parse(stored) : prev));
+    }, []);
+
+    useEffect(
+        () => localStorage.setItem("quotas", JSON.stringify(quotas)),
+        [quotas]
+    );
 
     const addQuota = () => {
         setQuotas((prev) => [
