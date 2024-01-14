@@ -37,12 +37,6 @@ export default function App() {
         ]);
     };
 
-    const updateQuota = (uid: string, state: QuotaType) => {
-        setQuotas((prev) =>
-            prev.map((quota) => (quota.uid == uid ? state : quota))
-        );
-    };
-
     let quotaElements = quotas.map((quota, index) => (
         <Card key={quota.uid}>
             <CardHeader className="flex flex-row items-center justify-between">
@@ -126,7 +120,7 @@ export default function App() {
                                 q.uid == quota.uid
                                     ? {
                                           ...quota,
-                                          day4: Number.parseFloat(
+                                          sold: Number.parseFloat(
                                               e.target.value
                                           ),
                                       }
