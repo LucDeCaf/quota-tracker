@@ -4,8 +4,9 @@ import { Button } from "./components/ui/button";
 import { Input } from "./components/ui/input";
 import { Label } from "./components/ui/label";
 import { nanoid } from "nanoid";
+import { X } from 'lucide-react';
 
-type QuotaType = {
+type Quota = {
     uid: string;
     day1: number;
     day2: number;
@@ -13,8 +14,48 @@ type QuotaType = {
     sold: number;
 };
 
+interface InputFieldProps {
+    quota: Quota;
+    field: "day1" | "day2" | "day3" | "sold";
+    setter: React.Dispatch<React.SetStateAction<Quota[]>>;
+}
+
+function InputField({ quota, field, setter }: InputFieldProps) {
+    return (
+        <div className="flex flex-col gap-4">
+            <Label htmlFor={`${quota.uid}-${field}`}>Day 1</Label>
+            <Input
+                id={`${quota.uid}-${field}`}
+                type="number"
+                value={quota[field]}
+                onChange={(e) =>
+                    setter((prev) =>
+                        prev.map((q) => {
+                            switch (q.uid) {
+                                case quota.uid:
+                                    let value = e.target.value;
+
+                                    return {
+                                        ...quota,
+                                        [field]:
+                                            value == ""
+                                                ? 0
+                                                : Number.parseInt(value),
+                                    };
+                                    break;
+                                default:
+                                    return q;
+                            }
+                        })
+                    )
+                }
+            />
+        </div>
+    );
+}
+
 export default function App() {
-    const [quotas, setQuotas] = useState<QuotaType[]>([]);
+    const [quotas, setQuotas] = useState<Quota[]>([]);
 
     let totalSold = 0;
     let totalOnShip = 0;
@@ -53,96 +94,21 @@ export default function App() {
                 <CardTitle>Quota {quotas.length - index}</CardTitle>
                 <Button
                     variant="outline"
+                    className="w-12 h-12 p-0"
                     onClick={() =>
                         setQuotas((prev) =>
                             prev.filter((q) => q.uid != quota.uid)
                         )
                     }
                 >
-                    X
+                    <X />
                 </Button>
             </CardHeader>
             <CardContent className="flex flex-col gap-4">
-                <Label htmlFor={`${quota.uid}-day1`}>Day 1</Label>
-                <Input
-                    id={`${quota.uid}-day1`}
-                    type="number"
-                    value={quota.day1}
-                    onChange={(e) =>
-                        setQuotas((prev) =>
-                            prev.map((q) =>
-                                q.uid == quota.uid
-                                    ? {
-                                          ...quota,
-                                          day1: Number.parseFloat(
-                                              e.target.value
-                                          ),
-                                      }
-                                    : q
-                            )
-                        )
-                    }
-                />
-                <Label htmlFor={`${quota.uid}-day2`}>Day 2</Label>
-                <Input
-                    id={`${quota.uid}-day2`}
-                    type="number"
-                    value={quota.day2}
-                    onChange={(e) =>
-                        setQuotas((prev) =>
-                            prev.map((q) =>
-                                q.uid == quota.uid
-                                    ? {
-                                          ...quota,
-                                          day2: Number.parseFloat(
-                                              e.target.value
-                                          ),
-                                      }
-                                    : q
-                            )
-                        )
-                    }
-                />
-                <Label htmlFor={`${quota.uid}-day3`}>Day 3</Label>
-                <Input
-                    id={`${quota.uid}-day3`}
-                    type="number"
-                    value={quota.day3}
-                    onChange={(e) =>
-                        setQuotas((prev) =>
-                            prev.map((q) =>
-                                q.uid == quota.uid
-                                    ? {
-                                          ...quota,
-                                          day3: Number.parseFloat(
-                                              e.target.value
-                                          ),
-                                      }
-                                    : q
-                            )
-                        )
-                    }
-                />
-                <Label htmlFor={`${quota.uid}-sold`}>Sold</Label>
-                <Input
-                    id={`${quota.uid}-sold`}
-                    type="number"
-                    value={quota.sold}
-                    onChange={(e) =>
-                        setQuotas((prev) =>
-                            prev.map((q) =>
-                                q.uid == quota.uid
-                                    ? {
-                                          ...quota,
-                                          sold: Number.parseFloat(
-                                              e.target.value
-                                          ),
-                                      }
-                                    : q
-                            )
-                        )
-                    }
-                />
+                <InputField quota={quota} field="day1" setter={setQuotas} />
+                <InputField quota={quota} field="day2" setter={setQuotas} />
+                <InputField quota={quota} field="day3" setter={setQuotas} />
+                <InputField quota={quota} field="sold" setter={setQuotas} />
             </CardContent>
         </Card>
     ));
