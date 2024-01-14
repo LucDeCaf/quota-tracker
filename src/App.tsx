@@ -67,6 +67,7 @@ export default function App() {
                 <Input
                     id={`${quota.uid}-day1`}
                     type="number"
+                    value={quota.day1}
                     onChange={(e) =>
                         setQuotas((prev) =>
                             prev.map((q) =>
@@ -86,6 +87,7 @@ export default function App() {
                 <Input
                     id={`${quota.uid}-day2`}
                     type="number"
+                    value={quota.day2}
                     onChange={(e) =>
                         setQuotas((prev) =>
                             prev.map((q) =>
@@ -105,6 +107,7 @@ export default function App() {
                 <Input
                     id={`${quota.uid}-day3`}
                     type="number"
+                    value={quota.day3}
                     onChange={(e) =>
                         setQuotas((prev) =>
                             prev.map((q) =>
@@ -124,6 +127,7 @@ export default function App() {
                 <Input
                     id={`${quota.uid}-sold`}
                     type="number"
+                    value={quota.sold}
                     onChange={(e) =>
                         setQuotas((prev) =>
                             prev.map((q) =>
