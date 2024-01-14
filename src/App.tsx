@@ -148,7 +148,6 @@ export default function App() {
             <div className="flex justify-between">
                 <h1 className="font-mono text-4xl">Quota Tracker</h1>
                 <div className="flex gap-2 font-mono">
-                    <Button variant="link">Options</Button>
                     <Button variant="outline" onClick={() => setQuotas([])}>
                         Clear
                     </Button>
