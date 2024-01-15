@@ -4,16 +4,12 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { X } from "lucide-react";
 import type { Quota } from "@/App";
+import type { ViewProps } from "@/lib/utils";
 import { handleInputFieldChange } from "@/lib/utils";
 
 export interface CardInputFieldProps {
     quota: Quota;
     field: "day1" | "day2" | "day3" | "sold";
-    setter: React.Dispatch<React.SetStateAction<Quota[]>>;
-}
-
-export interface CardViewProps {
-    quotas: Quota[];
     setter: React.Dispatch<React.SetStateAction<Quota[]>>;
 }
 
@@ -44,6 +40,7 @@ export function CardInputField({ quota, field, setter }: CardInputFieldProps) {
                 id={`${quota.uid}-${field}`}
                 type="number"
                 value={quota[field]}
+                onFocus={(e) => e.target.select()}
                 onChange={(e) =>
                     handleInputFieldChange(e, quota, field, setter)
                 }
@@ -52,7 +49,7 @@ export function CardInputField({ quota, field, setter }: CardInputFieldProps) {
     );
 }
 
-export function CardView({ quotas, setter }: CardViewProps) {
+export function CardView({ quotas, setter }: ViewProps) {
     return (
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {quotas.map((quota, index) => (

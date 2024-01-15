@@ -6,11 +6,18 @@ export function cn(...inputs: ClassValue[]) {
     return twMerge(clsx(inputs));
 }
 
+export type Setter<T> = React.Dispatch<React.SetStateAction<T>>;
+
+export interface ViewProps {
+    quotas: Quota[];
+    setter: Setter<Quota[]>;
+}
+
 export function handleInputFieldChange(
     event: React.ChangeEvent<HTMLInputElement>,
     quota: Quota,
     field: "day1" | "day2" | "day3" | "sold",
-    setter: React.Dispatch<React.SetStateAction<Quota[]>>
+    setter: Setter<Quota[]>
 ) {
     setter((prev) =>
         prev.map((q) => {

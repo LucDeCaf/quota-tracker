@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { CardView } from "@/components/views/card-view";
+import { TableView } from "./components/views/table-view";
 import { nanoid } from "nanoid";
 
 export type Quota = {
@@ -11,26 +12,11 @@ export type Quota = {
     sold: number;
 };
 
+const DEFAULT_VIEW = "table";
+
 export default function App() {
     const [quotas, setQuotas] = useState<Quota[]>([]);
-
-    let totalSold = 0;
-    let totalOnShip = 0;
-
-    quotas.forEach((quota) => {
-        totalSold += quota.sold;
-        totalOnShip += quota.day1 + quota.day2 + quota.day3 - quota.sold;
-    });
-
-    useEffect(() => {
-        let stored = localStorage.getItem("quotas");
-        setQuotas((prev) => (stored ? JSON.parse(stored) : prev));
-    }, []);
-
-    useEffect(
-        () => localStorage.setItem("quotas", JSON.stringify(quotas)),
-        [quotas]
-    );
+    const [viewKind, setViewKind] = useState<"table" | "card">(DEFAULT_VIEW);
 
     const addQuota = () => {
         setQuotas((prev) => [
@@ -45,11 +31,49 @@ export default function App() {
         ]);
     };
 
+    useEffect(() => {
+        // Get stored quotas
+        let stored = localStorage.getItem("quotas");
+        setQuotas((prev) => (stored ? JSON.parse(stored) : prev));
+    }, []);
+
+    useEffect(
+        () => localStorage.setItem("quotas", JSON.stringify(quotas)),
+        [quotas]
+    );
+
+    let totalSold = 0;
+    let totalOnShip = 0;
+
+    quotas.forEach((quota) => {
+        totalSold += quota.sold;
+        totalOnShip += quota.day1 + quota.day2 + quota.day3 - quota.sold;
+    });
+
+    let view: JSX.Element;
+
+    switch (viewKind) {
+        case "table":
+            view = <TableView quotas={quotas} setter={setQuotas} />;
+            break;
+        case "card":
+            view = <CardView quotas={quotas} setter={setQuotas} />;
+            break;
+    }
+
     return (
         <main className="flex flex-col gap-6 p-8 pt-16 text-white">
             <div className="flex justify-between">
                 <h1 className="font-mono text-4xl">Quota Tracker</h1>
                 <div className="flex gap-2 font-mono">
+                    <Button
+                        variant="link"
+                        onClick={() =>
+                            setViewKind(viewKind === "table" ? "card" : "table")
+                        }
+                    >
+                        Change View
+                    </Button>
                     <Button variant="outline" onClick={() => setQuotas([])}>
                         Clear
                     </Button>
@@ -69,7 +93,7 @@ export default function App() {
                 Add Quota
             </Button>
 
-            <CardView quotas={quotas} setter={setQuotas} />
+            {view}
         </main>
     );
 }
