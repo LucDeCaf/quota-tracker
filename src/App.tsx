@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { CardView } from "@/components/views/card-view";
-import { TableView } from "./components/views/table-view";
+import { TableView } from "@/components/views/table-view";
+import { Options } from "@/components/options";
 import { nanoid } from "nanoid";
 
 export type Quota = {
@@ -32,7 +33,6 @@ export default function App() {
     };
 
     useEffect(() => {
-        // Get stored quotas
         let stored = localStorage.getItem("quotas");
         setQuotas((prev) => (stored ? JSON.parse(stored) : prev));
     }, []);
@@ -62,38 +62,33 @@ export default function App() {
     }
 
     return (
-        <main className="flex flex-col gap-6 p-8 pt-16 text-white">
-            <div className="flex justify-between">
-                <h1 className="font-mono text-4xl">Quota Tracker</h1>
-                <div className="flex gap-2 font-mono">
-                    <Button
-                        variant="link"
-                        onClick={() =>
-                            setViewKind(viewKind === "table" ? "card" : "table")
-                        }
-                    >
-                        Change View
-                    </Button>
-                    <Button variant="outline" onClick={() => setQuotas([])}>
-                        Clear
-                    </Button>
+        <>
+            <main className="flex flex-col gap-6 p-8 pt-16 text-white">
+                <div className="flex justify-between">
+                    <h1 className="font-mono text-4xl">Quota Tracker</h1>
+                    <div className="flex gap-4 font-mono">
+                        <Options viewKind={viewKind} viewKindSetter={setViewKind} />
+                        <Button variant="outline" onClick={() => setQuotas([])}>
+                            Clear
+                        </Button>
+                    </div>
                 </div>
-            </div>
 
-            <div className="font-mono text-2xl">
-                <p>Total On Ship: {totalOnShip}</p>
-                <p>Total Sold: &nbsp;&nbsp;&nbsp;{totalSold}</p>
-            </div>
+                <div className="font-mono text-2xl">
+                    <p>Total On Ship: {totalOnShip}</p>
+                    <p>Total Sold: &nbsp;&nbsp;&nbsp;{totalSold}</p>
+                </div>
 
-            <Button
-                variant="outline"
-                className="font-mono text-3xl"
-                onClick={addQuota}
-            >
-                Add Quota
-            </Button>
+                <Button
+                    variant="outline"
+                    className="font-mono text-3xl"
+                    onClick={addQuota}
+                >
+                    Add Quota
+                </Button>
 
-            {view}
-        </main>
+                {view}
+            </main>
+        </>
     );
 }
