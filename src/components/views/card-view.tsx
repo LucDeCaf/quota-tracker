@@ -18,9 +18,28 @@ export interface CardViewProps {
 }
 
 export function CardInputField({ quota, field, setter }: CardInputFieldProps) {
+    let label: string;
+
+    switch (field) {
+        case "day1":
+            label = "Day 1";
+            break;
+        case "day2":
+            label = "Day 2";
+            break;
+        case "day3":
+            label = "Day 3";
+            break;
+        case "sold":
+            label = "Sold";
+            break;
+        default:
+            label = "";
+    }
+
     return (
         <div className="flex flex-col gap-4">
-            <Label htmlFor={`${quota.uid}-${field}`}>Day 1</Label>
+            <Label htmlFor={`${quota.uid}-${field}`}>{label}</Label>
             <Input
                 id={`${quota.uid}-${field}`}
                 type="number"
