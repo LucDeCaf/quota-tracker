@@ -108,6 +108,7 @@ export function TableView({ quotas, options, setter }: ViewProps) {
             <TableBody>
                 {quotas.map((quota, index) => (
                     <TableViewItem
+                    key={quota.uid}
                         index={quotas.length - index}
                         quota={quota}
                         options={options}
