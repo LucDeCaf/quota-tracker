@@ -51,7 +51,7 @@ export function CardInputField({ quota, field, setter }: CardInputFieldProps) {
 
 export function CardView({ quotas, setter }: ViewProps) {
     return (
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="grid gap-4 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4">
             {quotas.map((quota, index) => (
                 <Card key={quota.uid}>
                     <CardHeader className="flex flex-row items-center justify-between">
