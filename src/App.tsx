@@ -6,6 +6,7 @@ import type { Options } from "@/lib/utils";
 import { Quota, VALID_DAYS_REVERSED } from "@/lib/utils";
 import { nanoid } from "nanoid";
 import { useEffect, useState } from "react";
+import { ModeToggle } from "@/components/mode-toggle";
 
 function App() {
     const [quotas, setQuotas] = useState<Quota[]>([]);
@@ -125,9 +126,14 @@ function App() {
                     <h2 className="text-2xl">Stats</h2>
                     <ul className="flex flex-col text-xl list-inside list-['-']">
                         <li>&nbsp;Total On Ship:&nbsp;&nbsp; {totalOnShip}</li>
-                        <li>&nbsp;Total Sold: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{totalSold}</li>
+                        <li>
+                            &nbsp;Total Sold: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                            {totalSold}
+                        </li>
                         <li>&nbsp;Total Collected: {totalCollected}</li>
-                        <li>&nbsp;Average Per Day: {averagePerDay.toFixed(2)}</li>
+                        <li>
+                            &nbsp;Average Per Day: {averagePerDay.toFixed(2)}
+                        </li>
                     </ul>
                 </div>
             );
@@ -135,47 +141,43 @@ function App() {
     }
 
     return (
-        <>
-            <main className="flex flex-col gap-6 p-8 pt-16 text-white">
-                <div className="flex justify-between">
-                    <h1 className="font-mono text-4xl">Quota Tracker</h1>
-                    <div className="flex gap-4 font-mono">
-                        <Button asChild variant="link" className="text-md">
-                            <a
-                                href="https://github.com/LucDeCaf/quota-tracker#readme"
-                                target="_blank"
-                                rel="noopener noreferrer"
-                            >
-                                GitHub
-                            </a>
-                        </Button>
-                        <OptionsMenu
-                            options={options}
-                            setOptions={setOptions}
-                        />
-                        <Button
-                            className="text-md"
-                            variant="outline"
-                            onClick={() => setQuotas([])}
+        <main className="flex flex-col gap-6 p-8 pt-16">
+            <div className="flex justify-between">
+                <h1 className="font-mono text-4xl">Quota Tracker</h1>
+                <div className="flex gap-4 font-mono">
+                    <Button asChild variant="link" className="text-md">
+                        <a
+                            href="https://github.com/LucDeCaf/quota-tracker#readme"
+                            target="_blank"
+                            rel="noopener noreferrer"
                         >
-                            Clear
-                        </Button>
-                    </div>
+                            GitHub
+                        </a>
+                    </Button>
+                    <OptionsMenu options={options} setOptions={setOptions} />
+                    <Button
+                        className="text-md"
+                        variant="outline"
+                        onClick={() => setQuotas([])}
+                    >
+                        Clear
+                    </Button>
+                    <ModeToggle />
                 </div>
+            </div>
 
-                {statDisplay}
+            {statDisplay}
 
-                <Button
-                    variant="outline"
-                    className="font-mono text-3xl"
-                    onClick={addQuota}
-                >
-                    Add Quota
-                </Button>
+            <Button
+                variant="outline"
+                className="font-mono text-3xl"
+                onClick={addQuota}
+            >
+                Add Quota
+            </Button>
 
-                {view}
-            </main>
-        </>
+            {view}
+        </main>
     );
 }
 
