@@ -8,7 +8,13 @@ If you ahve any changes you want made, submit an **issue** describing the change
 
 ## Technologies used
 
+### Built with:
+
 - [React + Vite](https://react.dev/)
 - [shadcn-ui](https://ui.shadcn.com/)
 - [TailwindCSS](https://tailwindcss.com/)
 - [Typescript](https://www.typescriptlang.org/)
+
+### Deployed to:
+
+- [Netlify](https://www.netlify.com/)
