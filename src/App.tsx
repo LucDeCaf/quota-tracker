@@ -99,11 +99,24 @@ function App() {
                 <div className="flex justify-between">
                     <h1 className="font-mono text-4xl">Quota Tracker</h1>
                     <div className="flex gap-4 font-mono">
+                        <Button asChild variant="link" className="text-md">
+                            <a
+                                href="https://github.com/LucDeCaf/quota-tracker#readme"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                            >
+                                GitHub
+                            </a>
+                        </Button>
                         <OptionsMenu
                             options={options}
                             setOptions={setOptions}
                         />
-                        <Button variant="outline" onClick={() => setQuotas([])}>
+                        <Button
+                            className="text-md"
+                            variant="outline"
+                            onClick={() => setQuotas([])}
+                        >
                             Clear
                         </Button>
                     </div>
