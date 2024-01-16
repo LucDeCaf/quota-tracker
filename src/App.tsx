@@ -11,6 +11,7 @@ function App() {
     const [quotas, setQuotas] = useState<Quota[]>([]);
     const [options, setOptions] = useState<Options>({
         viewKind: "table",
+        statDisplayMode: "normal",
         colouredText: true,
     });
 
@@ -93,6 +94,46 @@ function App() {
             break;
     }
 
+    let statDisplay: JSX.Element;
+
+    switch (options.statDisplayMode) {
+        case "normal":
+            statDisplay = (
+                <div className="grid grid-cols-1 gap-6 font-mono text-2xl md:gap-x-12 md:grid-cols-2 2xl:grid-cols-4">
+                    <p className="flex justify-between">
+                        <span>Total On Ship:</span>
+                        <span>{totalOnShip}</span>
+                    </p>
+                    <p className="flex justify-between">
+                        <span>Total Sold:</span>
+                        <span>{totalSold}</span>
+                    </p>
+                    <p className="flex justify-between">
+                        <span>Total Collected:</span>
+                        <span>{totalCollected}</span>
+                    </p>
+                    <p className="flex justify-between">
+                        <span>Average Per Day:</span>
+                        <span>{averagePerDay.toFixed(2)}</span>
+                    </p>
+                </div>
+            );
+            break;
+        case "streamer":
+            statDisplay = (
+                <div className="flex flex-col gap-2 font-mono">
+                    <h2 className="text-2xl">Stats</h2>
+                    <ul className="flex flex-col text-xl list-inside list-['-']">
+                        <li>&nbsp;Total On Ship:&nbsp;&nbsp; {totalOnShip}</li>
+                        <li>&nbsp;Total Sold: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{totalSold}</li>
+                        <li>&nbsp;Total Collected: {totalCollected}</li>
+                        <li>&nbsp;Average Per Day: {averagePerDay.toFixed(2)}</li>
+                    </ul>
+                </div>
+            );
+            break;
+    }
+
     return (
         <>
             <main className="flex flex-col gap-6 p-8 pt-16 text-white">
@@ -122,24 +163,7 @@ function App() {
                     </div>
                 </div>
 
-                <div className="grid grid-cols-1 gap-6 font-mono text-2xl md:gap-x-12 md:grid-cols-2 2xl:grid-cols-4">
-                    <p className="flex justify-between">
-                        <span>Total On Ship:</span>
-                        <span>{totalOnShip}</span>
-                    </p>
-                    <p className="flex justify-between">
-                        <span>Total Sold:</span>
-                        <span>{totalSold}</span>
-                    </p>
-                    <p className="flex justify-between">
-                        <span>Total Collected:</span>
-                        <span>{totalCollected}</span>
-                    </p>
-                    <p className="flex justify-between">
-                        <span>Average Per Day:</span>
-                        <span>{averagePerDay.toFixed(2)}</span>
-                    </p>
-                </div>
+                {statDisplay}
 
                 <Button
                     variant="outline"

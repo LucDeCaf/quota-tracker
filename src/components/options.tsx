@@ -34,7 +34,7 @@ function OptionsMenu({ options, setOptions }: OptionsMenuProps) {
             onValueChange={(viewKind) =>
                 setTempOptions((prev) => ({
                     ...prev,
-                    viewKind: viewKind as "table" | "card",
+                    viewKind: viewKind as typeof options.viewKind,
                 }))
             }
         >
@@ -49,10 +49,18 @@ function OptionsMenu({ options, setOptions }: OptionsMenuProps) {
             <SelectContent>
                 <SelectGroup>
                     <SelectLabel>Views</SelectLabel>
-                    <SelectItem defaultChecked value="table">
+                    <SelectItem
+                        defaultChecked={options.viewKind === "table"}
+                        value="table"
+                    >
                         Table
                     </SelectItem>
-                    <SelectItem value="card">Card</SelectItem>
+                    <SelectItem
+                        defaultChecked={options.viewKind === "card"}
+                        value="card"
+                    >
+                        Card
+                    </SelectItem>
                 </SelectGroup>
             </SelectContent>
         </Select>
@@ -68,6 +76,43 @@ function OptionsMenu({ options, setOptions }: OptionsMenuProps) {
                 }))
             }
         />
+    );
+
+    const statDisplaySelect = (
+        <Select
+            onValueChange={(statDisplayMode) =>
+                setTempOptions((prev) => ({
+                    ...prev,
+                    statDisplayMode: statDisplayMode as typeof options.statDisplayMode,
+                }))
+            }
+        >
+            <SelectTrigger>
+                <SelectValue
+                    placeholder={
+                        tempOptions.statDisplayMode[0].toUpperCase() +
+                        tempOptions.statDisplayMode.slice(1)
+                    }
+                />
+            </SelectTrigger>
+            <SelectContent>
+                <SelectGroup>
+                    <SelectLabel>Display Modes</SelectLabel>
+                    <SelectItem
+                        defaultChecked={options.statDisplayMode === "normal"}
+                        value="normal"
+                    >
+                        Normal
+                    </SelectItem>
+                    <SelectItem
+                        defaultChecked={options.statDisplayMode === "streamer"}
+                        value="streamer"
+                    >
+                        Streamer
+                    </SelectItem>
+                </SelectGroup>
+            </SelectContent>
+        </Select>
     );
 
     const handleSave = () => {
@@ -90,6 +135,10 @@ function OptionsMenu({ options, setOptions }: OptionsMenuProps) {
                     <div className="flex flex-col gap-4">
                         <Label>View Kind</Label>
                         {viewKindSelect}
+                    </div>
+                    <div className="flex flex-col gap-4">
+                        <Label>Stat Display Mode</Label>
+                        {statDisplaySelect}
                     </div>
                     <div className="flex items-center justify-between">
                         <Label>Colour text based on amount</Label>

@@ -28,6 +28,7 @@ type Quota = {
 
 type Options = {
     viewKind: "table" | "card";
+    statDisplayMode: "normal" | "streamer";
     colouredText: boolean;
 };
 
