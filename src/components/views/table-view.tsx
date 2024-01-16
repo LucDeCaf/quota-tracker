@@ -1,21 +1,22 @@
-import {
-    handleInputFieldChange,
-    type Setter,
-    type ViewProps,
-} from "@/lib/utils";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import {
     Table,
     TableBody,
-    TableHead,
     TableCell,
-    TableRow,
+    TableHead,
     TableHeader,
+    TableRow,
 } from "@/components/ui/table";
-import { Quota } from "@/App";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
+import {
+    Field,
+    handleInputFieldChange,
+    Options,
+    Quota,
+    type Setter,
+    type ViewProps,
+} from "@/lib/utils";
 import { X } from "lucide-react";
-import { Options } from "../options";
 
 interface TableViewItemProps {
     index: number;
@@ -26,7 +27,7 @@ interface TableViewItemProps {
 
 interface TableInputFieldProps {
     quota: Quota;
-    field: "day1" | "day2" | "day3" | "sold";
+    field: Field;
     setter: Setter<Quota[]>;
 }
 
@@ -42,12 +43,7 @@ function TableInputField({ quota, field, setter }: TableInputFieldProps) {
     );
 }
 
-export function TableViewItem({
-    index,
-    quota,
-    options,
-    setter,
-}: TableViewItemProps) {
+function TableViewItem({ index, quota, options, setter }: TableViewItemProps) {
     const netProfit = quota.day1 + quota.day2 + quota.day3 - quota.sold;
 
     return (
@@ -91,7 +87,7 @@ export function TableViewItem({
     );
 }
 
-export function TableView({ quotas, options, setter }: ViewProps) {
+function TableView({ quotas, options, setter }: ViewProps) {
     quotas.filter((_q) => true);
     return (
         <Table>
@@ -108,7 +104,7 @@ export function TableView({ quotas, options, setter }: ViewProps) {
             <TableBody>
                 {quotas.map((quota, index) => (
                     <TableViewItem
-                    key={quota.uid}
+                        key={quota.uid}
                         index={quotas.length - index}
                         quota={quota}
                         options={options}
@@ -119,3 +115,5 @@ export function TableView({ quotas, options, setter }: ViewProps) {
         </Table>
     );
 }
+
+export { TableView };

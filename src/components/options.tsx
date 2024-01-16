@@ -1,3 +1,5 @@
+import { useState } from "react";
+
 import {
     Dialog,
     DialogClose,
@@ -15,22 +17,16 @@ import {
     SelectLabel,
     SelectTrigger,
     SelectValue,
-} from "./ui/select";
-import { Setter } from "@/lib/utils";
-import { Switch } from "./ui/switch";
-import { useState } from "react";
+} from "@/components/ui/select";
+import { Switch } from "@/components/ui/switch";
+import { Options, Setter } from "@/lib/utils";
 
-export type Options = {
-    viewKind: "table" | "card";
-    colouredText: boolean;
-};
-
-interface OptionsProps {
+interface OptionsMenuProps {
     options: Options;
     setOptions: Setter<Options>;
 }
 
-export function OptionsMenu({ options, setOptions }: OptionsProps) {
+function OptionsMenu({ options, setOptions }: OptionsMenuProps) {
     const [tempOptions, setTempOptions] = useState<Options>(options);
 
     const viewKindSelect = (
@@ -111,3 +107,5 @@ export function OptionsMenu({ options, setOptions }: OptionsProps) {
         </Dialog>
     );
 }
+
+export { OptionsMenu };

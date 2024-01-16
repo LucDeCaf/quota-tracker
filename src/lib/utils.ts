@@ -1,24 +1,52 @@
-import { Quota } from "@/App";
-import { Options } from "@/components/options";
-import { type ClassValue, clsx } from "clsx";
+import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
 
-export function cn(...inputs: ClassValue[]) {
+const VALID_DAYS = ["day1", "day2", "day3"] as ("day1" | "day2" | "day3")[];
+
+const VALID_DAYS_REVERSED = ["day3", "day2", "day1"] as (
+    | "day3"
+    | "day2"
+    | "day1"
+)[];
+
+const VALID_FIELDS = ["day1", "day2", "day3", "sold"] as (
+    | "day1"
+    | "day2"
+    | "day3"
+    | "sold"
+)[];
+
+type Field = "day1" | "day2" | "day3" | "sold";
+
+type Quota = {
+    uid: string;
+    day1: number;
+    day2: number;
+    day3: number;
+    sold: number;
+};
+
+type Options = {
+    viewKind: "table" | "card";
+    colouredText: boolean;
+};
+
+function cn(...inputs: ClassValue[]) {
     return twMerge(clsx(inputs));
 }
 
-export type Setter<T> = React.Dispatch<React.SetStateAction<T>>;
+type Setter<T> = React.Dispatch<React.SetStateAction<T>>;
 
-export interface ViewProps {
+interface ViewProps {
     quotas: Quota[];
     options: Options;
     setter: Setter<Quota[]>;
 }
 
-export function handleInputFieldChange(
+function handleInputFieldChange(
     event: React.ChangeEvent<HTMLInputElement>,
     quota: Quota,
-    field: "day1" | "day2" | "day3" | "sold",
+    field: Field,
     setter: Setter<Quota[]>
 ) {
     setter((prev) =>
@@ -38,3 +66,13 @@ export function handleInputFieldChange(
         })
     );
 }
+
+export type { Field, Options, Quota, Setter, ViewProps };
+
+export {
+    VALID_DAYS,
+    VALID_DAYS_REVERSED,
+    VALID_FIELDS,
+    cn,
+    handleInputFieldChange,
+};

@@ -1,17 +1,20 @@
-import { Label } from "@/components/ui/label";
-import { Input } from "@/components/ui/input";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import type { Field, Setter, ViewProps } from "@/lib/utils";
+import {
+    Options,
+    VALID_FIELDS,
+    handleInputFieldChange,
+    type Quota,
+} from "@/lib/utils";
 import { X } from "lucide-react";
-import { VALID_FIELDS, type Quota } from "@/App";
-import type { Setter, ViewProps } from "@/lib/utils";
-import { handleInputFieldChange } from "@/lib/utils";
-import { Options } from "../options";
 
 interface CardInputFieldProps {
     quota: Quota;
     options: Options;
-    field: "day1" | "day2" | "day3" | "sold";
+    field: Field;
     setter: Setter<Quota[]>;
 }
 
@@ -22,7 +25,7 @@ interface CardItemProps {
     setter: Setter<Quota[]>;
 }
 
-export function CardInputField({
+function CardInputField({
     quota,
     field,
     options: _options,
@@ -82,7 +85,7 @@ function CardItem({ quota, index, options, setter }: CardItemProps) {
             </CardHeader>
             <CardContent className="flex flex-col gap-6">
                 <div className="flex justify-between pr-2 text-xl">
-                    <span>Net Profit:{" "}</span>
+                    <span>Net Profit: </span>
                     {(netProfit === 0 || !options.colouredText) && (
                         <span>{netProfit}</span>
                     )}
@@ -109,7 +112,7 @@ function CardItem({ quota, index, options, setter }: CardItemProps) {
     );
 }
 
-export function CardView({ quotas, options, setter }: ViewProps) {
+function CardView({ quotas, options, setter }: ViewProps) {
     return (
         <div className="grid gap-4 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4">
             {quotas.map((quota, index) => (
@@ -124,3 +127,5 @@ export function CardView({ quotas, options, setter }: ViewProps) {
         </div>
     );
 }
+
+export { CardView };

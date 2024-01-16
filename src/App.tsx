@@ -1,37 +1,13 @@
-import { useEffect, useState } from "react";
+import { OptionsMenu } from "@/components/options";
 import { Button } from "@/components/ui/button";
 import { CardView } from "@/components/views/card-view";
 import { TableView } from "@/components/views/table-view";
-import { OptionsMenu } from "@/components/options";
-import type { Options } from "@/components/options";
+import type { Options } from "@/lib/utils";
+import { Quota, VALID_DAYS_REVERSED } from "@/lib/utils";
 import { nanoid } from "nanoid";
+import { useEffect, useState } from "react";
 
-export type Quota = {
-    uid: string;
-    day1: number;
-    day2: number;
-    day3: number;
-    sold: number;
-};
-
-export const VALID_DAYS = ["day1", "day2", "day3"] as (
-    | "day1"
-    | "day2"
-    | "day3"
-)[];
-export const VALID_DAYS_REVERSED = ["day3", "day2", "day1"] as (
-    | "day3"
-    | "day2"
-    | "day1"
-)[];
-export const VALID_FIELDS = ["day1", "day2", "day3", "sold"] as (
-    | "day1"
-    | "day2"
-    | "day3"
-    | "sold"
-)[];
-
-export default function App() {
+function App() {
     const [quotas, setQuotas] = useState<Quota[]>([]);
     const [options, setOptions] = useState<Options>({
         viewKind: "table",
@@ -165,3 +141,5 @@ export default function App() {
         </>
     );
 }
+
+export default App;
