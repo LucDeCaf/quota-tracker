@@ -17,12 +17,46 @@ import {
 } from "./ui/select";
 import { Setter } from "@/lib/utils";
 
+export type Options = {
+    viewKind: "table" | "card";
+    colouredText: boolean;
+};
+
 interface OptionsProps {
-    viewKind: string;
-    viewKindSetter: Setter<"card" | "table">;
+    options: Options;
+    setOptions: Setter<Options>;
 }
 
-export function Options({ viewKind, viewKindSetter }: OptionsProps) {
+export function OptionsMenu({ options, setOptions }: OptionsProps) {
+    const viewKindSelect = (
+        <Select
+            onValueChange={(v) =>
+                setOptions((prev) => ({
+                    ...prev,
+                    viewKind: v as "table" | "card",
+                }))
+            }
+        >
+            <SelectTrigger>
+                <SelectValue
+                    placeholder={
+                        options.viewKind[0].toUpperCase() +
+                        options.viewKind.slice(1)
+                    }
+                />
+            </SelectTrigger>
+            <SelectContent>
+                <SelectGroup>
+                    <SelectLabel>Views</SelectLabel>
+                    <SelectItem defaultChecked value="table">
+                        Table
+                    </SelectItem>
+                    <SelectItem value="card">Card</SelectItem>
+                </SelectGroup>
+            </SelectContent>
+        </Select>
+    );
+
     return (
         <Dialog>
             <DialogTrigger className="hover:underline underline-offset-4">
@@ -35,29 +69,7 @@ export function Options({ viewKind, viewKindSetter }: OptionsProps) {
                 <div className="flex flex-col gap-4">
                     <div className="flex flex-col w-1/2 gap-2">
                         <Label>View Kind</Label>
-                        <Select
-                            onValueChange={(v) =>
-                                viewKindSetter(v as "card" | "table")
-                            }
-                        >
-                            <SelectTrigger>
-                                <SelectValue
-                                    placeholder={
-                                        viewKind[0].toUpperCase() +
-                                        viewKind.slice(1)
-                                    }
-                                />
-                            </SelectTrigger>
-                            <SelectContent>
-                                <SelectGroup>
-                                    <SelectLabel>Views</SelectLabel>
-                                    <SelectItem defaultChecked value="table">
-                                        Table
-                                    </SelectItem>
-                                    <SelectItem value="card">Card</SelectItem>
-                                </SelectGroup>
-                            </SelectContent>
-                        </Select>
+                        {viewKindSelect}
                     </div>
                 </div>
             </DialogContent>

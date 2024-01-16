@@ -2,7 +2,8 @@ import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { CardView } from "@/components/views/card-view";
 import { TableView } from "@/components/views/table-view";
-import { Options } from "@/components/options";
+import { OptionsMenu } from "@/components/options";
+import type { Options } from "@/components/options";
 import { nanoid } from "nanoid";
 
 export type Quota = {
@@ -13,8 +14,6 @@ export type Quota = {
     sold: number;
 };
 
-const DEFAULT_VIEW = "table";
-const VALID_DAYS = ["day1", "day2", "day3"] as ("day1" | "day2" | "day3")[];
 const VALID_DAYS_REVERSED = ["day3", "day2", "day1"] as (
     | "day1"
     | "day2"
@@ -23,7 +22,10 @@ const VALID_DAYS_REVERSED = ["day3", "day2", "day1"] as (
 
 export default function App() {
     const [quotas, setQuotas] = useState<Quota[]>([]);
-    const [viewKind, setViewKind] = useState<"table" | "card">(DEFAULT_VIEW);
+    const [options, setOptions] = useState<Options>({
+        viewKind: "table",
+        colouredText: true,
+    });
 
     const addQuota = () => {
         setQuotas((prev) => [
@@ -39,13 +41,22 @@ export default function App() {
     };
 
     useEffect(() => {
-        let stored = localStorage.getItem("quotas");
-        setQuotas((prev) => (stored ? JSON.parse(stored) : prev));
+        const storedQuotas = localStorage.getItem("quotas");
+        const storedOptions = localStorage.getItem("options");
+        setQuotas((prev) => (storedQuotas ? JSON.parse(storedQuotas) : prev));
+        setOptions((prev) =>
+            storedOptions ? JSON.parse(storedOptions) : prev
+        );
     }, []);
 
     useEffect(
         () => localStorage.setItem("quotas", JSON.stringify(quotas)),
         [quotas]
+    );
+
+    useEffect(
+        () => localStorage.setItem("options", JSON.stringify(options)),
+        [options]
     );
 
     let totalSold = 0;
@@ -74,7 +85,7 @@ export default function App() {
 
     let view: JSX.Element;
 
-    switch (viewKind) {
+    switch (options.viewKind) {
         case "table":
             view = <TableView quotas={quotas} setter={setQuotas} />;
             break;
@@ -89,9 +100,9 @@ export default function App() {
                 <div className="flex justify-between">
                     <h1 className="font-mono text-4xl">Quota Tracker</h1>
                     <div className="flex gap-4 font-mono">
-                        <Options
-                            viewKind={viewKind}
-                            viewKindSetter={setViewKind}
+                        <OptionsMenu
+                            options={options}
+                            setOptions={setOptions}
                         />
                         <Button variant="outline" onClick={() => setQuotas([])}>
                             Clear
