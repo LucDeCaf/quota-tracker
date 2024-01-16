@@ -1,5 +1,6 @@
 import {
     Dialog,
+    DialogClose,
     DialogContent,
     DialogHeader,
     DialogTitle,
@@ -17,6 +18,7 @@ import {
 } from "./ui/select";
 import { Setter } from "@/lib/utils";
 import { Switch } from "./ui/switch";
+import { useState } from "react";
 
 export type Options = {
     viewKind: "table" | "card";
@@ -29,10 +31,12 @@ interface OptionsProps {
 }
 
 export function OptionsMenu({ options, setOptions }: OptionsProps) {
+    const [tempOptions, setTempOptions] = useState<Options>(options);
+
     const viewKindSelect = (
         <Select
             onValueChange={(viewKind) =>
-                setOptions((prev) => ({
+                setTempOptions((prev) => ({
                     ...prev,
                     viewKind: viewKind as "table" | "card",
                 }))
@@ -41,8 +45,8 @@ export function OptionsMenu({ options, setOptions }: OptionsProps) {
             <SelectTrigger>
                 <SelectValue
                     placeholder={
-                        options.viewKind[0].toUpperCase() +
-                        options.viewKind.slice(1)
+                        tempOptions.viewKind[0].toUpperCase() +
+                        tempOptions.viewKind.slice(1)
                     }
                 />
             </SelectTrigger>
@@ -60,9 +64,9 @@ export function OptionsMenu({ options, setOptions }: OptionsProps) {
 
     const colouredTextSwitch = (
         <Switch
-            checked={options.colouredText}
+            checked={tempOptions.colouredText}
             onCheckedChange={(checked) =>
-                setOptions((prev) => ({
+                setTempOptions((prev) => ({
                     ...prev,
                     colouredText: checked,
                 }))
@@ -70,11 +74,15 @@ export function OptionsMenu({ options, setOptions }: OptionsProps) {
         />
     );
 
+    const handleSave = () => {
+        setOptions(tempOptions);
+    };
+
     return (
         <Dialog>
             <DialogTrigger
                 className="hover:underline underline-offset-4"
-                onClick={() => console.log("clicked")}
+                onClick={() => setTempOptions(options)}
             >
                 Options
             </DialogTrigger>
@@ -82,8 +90,8 @@ export function OptionsMenu({ options, setOptions }: OptionsProps) {
                 <DialogHeader className="flex flex-col gap-2">
                     <DialogTitle>Options</DialogTitle>
                 </DialogHeader>
-                <form className="flex flex-col gap-6">
-                    <div className="flex flex-col w-1/2 gap-2">
+                <div className="flex flex-col gap-6">
+                    <div className="flex flex-col gap-4">
                         <Label>View Kind</Label>
                         {viewKindSelect}
                     </div>
@@ -91,7 +99,14 @@ export function OptionsMenu({ options, setOptions }: OptionsProps) {
                         <Label>Colour text based on amount</Label>
                         {colouredTextSwitch}
                     </div>
-                </form>
+                    <DialogClose
+                        className="text-md"
+                        type="submit"
+                        onClick={handleSave}
+                    >
+                        Save Changes
+                    </DialogClose>
+                </div>
             </DialogContent>
         </Dialog>
     );
