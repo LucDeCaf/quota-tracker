@@ -1,4 +1,5 @@
 import { Quota } from "@/App";
+import { Options } from "@/components/options";
 import { type ClassValue, clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
 
@@ -10,6 +11,7 @@ export type Setter<T> = React.Dispatch<React.SetStateAction<T>>;
 
 export interface ViewProps {
     quotas: Quota[];
+    options: Options;
     setter: Setter<Quota[]>;
 }
 

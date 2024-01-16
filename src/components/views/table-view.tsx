@@ -15,10 +15,12 @@ import { Quota } from "@/App";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { X } from "lucide-react";
+import { Options } from "../options";
 
 interface TableViewItemProps {
     index: number;
     quota: Quota;
+    options: Options;
     setter: Setter<Quota[]>;
 }
 
@@ -40,7 +42,12 @@ function TableInputField({ quota, field, setter }: TableInputFieldProps) {
     );
 }
 
-export function TableViewItem({ index, quota, setter }: TableViewItemProps) {
+export function TableViewItem({
+    index,
+    quota,
+    options,
+    setter,
+}: TableViewItemProps) {
     const netProfit = quota.day1 + quota.day2 + quota.day3 - quota.sold;
 
     return (
@@ -70,11 +77,13 @@ export function TableViewItem({ index, quota, setter }: TableViewItemProps) {
                 <TableInputField quota={quota} field="sold" setter={setter} />
             </TableCell>
             <TableCell className="text-right">
-                {netProfit == 0 && <span>{netProfit}</span>}
-                {netProfit > 0 && (
+                {(netProfit === 0 || !options.colouredText) && (
+                    <span>{netProfit}</span>
+                )}
+                {options.colouredText && netProfit > 0 && (
                     <span className="text-green-500">+{netProfit}</span>
                 )}
-                {netProfit < 0 && (
+                {options.colouredText && netProfit < 0 && (
                     <span className="text-red-500">{netProfit}</span>
                 )}
             </TableCell>
@@ -82,7 +91,7 @@ export function TableViewItem({ index, quota, setter }: TableViewItemProps) {
     );
 }
 
-export function TableView({ quotas, setter }: ViewProps) {
+export function TableView({ quotas, options, setter }: ViewProps) {
     quotas.filter((_q) => true);
     return (
         <Table>
@@ -101,6 +110,7 @@ export function TableView({ quotas, setter }: ViewProps) {
                     <TableViewItem
                         index={quotas.length - index}
                         quota={quota}
+                        options={options}
                         setter={setter}
                     />
                 ))}

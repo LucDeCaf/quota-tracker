@@ -3,17 +3,24 @@ import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { X } from "lucide-react";
-import type { Quota } from "@/App";
+import { VALID_FIELDS, type Quota } from "@/App";
 import type { ViewProps } from "@/lib/utils";
 import { handleInputFieldChange } from "@/lib/utils";
+import { Options } from "../options";
 
 export interface CardInputFieldProps {
     quota: Quota;
+    options: Options;
     field: "day1" | "day2" | "day3" | "sold";
     setter: React.Dispatch<React.SetStateAction<Quota[]>>;
 }
 
-export function CardInputField({ quota, field, setter }: CardInputFieldProps) {
+export function CardInputField({
+    quota,
+    field,
+    options: _options,
+    setter,
+}: CardInputFieldProps) {
     let label: string;
 
     switch (field) {
@@ -49,7 +56,7 @@ export function CardInputField({ quota, field, setter }: CardInputFieldProps) {
     );
 }
 
-export function CardView({ quotas, setter }: ViewProps) {
+export function CardView({ quotas, options, setter }: ViewProps) {
     return (
         <div className="grid gap-4 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4">
             {quotas.map((quota, index) => (
@@ -69,26 +76,14 @@ export function CardView({ quotas, setter }: ViewProps) {
                         </Button>
                     </CardHeader>
                     <CardContent className="flex flex-col gap-4">
-                        <CardInputField
-                            quota={quota}
-                            field="day1"
-                            setter={setter}
-                        />
-                        <CardInputField
-                            quota={quota}
-                            field="day2"
-                            setter={setter}
-                        />
-                        <CardInputField
-                            quota={quota}
-                            field="day3"
-                            setter={setter}
-                        />
-                        <CardInputField
-                            quota={quota}
-                            field="sold"
-                            setter={setter}
-                        />
+                        {VALID_FIELDS.map((field) => (
+                            <CardInputField
+                                quota={quota}
+                                options={options}
+                                field={field}
+                                setter={setter}
+                            />
+                        ))}
                     </CardContent>
                 </Card>
             ))}

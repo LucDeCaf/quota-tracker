@@ -14,10 +14,21 @@ export type Quota = {
     sold: number;
 };
 
-const VALID_DAYS_REVERSED = ["day3", "day2", "day1"] as (
+export const VALID_DAYS = ["day1", "day2", "day3"] as (
     | "day1"
     | "day2"
     | "day3"
+)[];
+export const VALID_DAYS_REVERSED = ["day3", "day2", "day1"] as (
+    | "day3"
+    | "day2"
+    | "day1"
+)[];
+export const VALID_FIELDS = ["day1", "day2", "day3", "sold"] as (
+    | "day1"
+    | "day2"
+    | "day3"
+    | "sold"
 )[];
 
 export default function App() {
@@ -87,10 +98,22 @@ export default function App() {
 
     switch (options.viewKind) {
         case "table":
-            view = <TableView quotas={quotas} setter={setQuotas} />;
+            view = (
+                <TableView
+                    quotas={quotas}
+                    options={options}
+                    setter={setQuotas}
+                />
+            );
             break;
         case "card":
-            view = <CardView quotas={quotas} setter={setQuotas} />;
+            view = (
+                <CardView
+                    quotas={quotas}
+                    options={options}
+                    setter={setQuotas}
+                />
+            );
             break;
     }
 

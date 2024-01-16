@@ -16,6 +16,7 @@ import {
     SelectValue,
 } from "./ui/select";
 import { Setter } from "@/lib/utils";
+import { Switch } from "./ui/switch";
 
 export type Options = {
     viewKind: "table" | "card";
@@ -30,10 +31,10 @@ interface OptionsProps {
 export function OptionsMenu({ options, setOptions }: OptionsProps) {
     const viewKindSelect = (
         <Select
-            onValueChange={(v) =>
+            onValueChange={(viewKind) =>
                 setOptions((prev) => ({
                     ...prev,
-                    viewKind: v as "table" | "card",
+                    viewKind: viewKind as "table" | "card",
                 }))
             }
         >
@@ -57,21 +58,40 @@ export function OptionsMenu({ options, setOptions }: OptionsProps) {
         </Select>
     );
 
+    const colouredTextSwitch = (
+        <Switch
+            checked={options.colouredText}
+            onCheckedChange={(checked) =>
+                setOptions((prev) => ({
+                    ...prev,
+                    colouredText: checked,
+                }))
+            }
+        />
+    );
+
     return (
         <Dialog>
-            <DialogTrigger className="hover:underline underline-offset-4">
+            <DialogTrigger
+                className="hover:underline underline-offset-4"
+                onClick={() => console.log("clicked")}
+            >
                 Options
             </DialogTrigger>
             <DialogContent className="flex flex-col gap-6">
                 <DialogHeader className="flex flex-col gap-2">
                     <DialogTitle>Options</DialogTitle>
                 </DialogHeader>
-                <div className="flex flex-col gap-4">
+                <form className="flex flex-col gap-6">
                     <div className="flex flex-col w-1/2 gap-2">
                         <Label>View Kind</Label>
                         {viewKindSelect}
                     </div>
-                </div>
+                    <div className="flex items-center justify-between">
+                        <Label>Colour text based on amount</Label>
+                        {colouredTextSwitch}
+                    </div>
+                </form>
             </DialogContent>
         </Dialog>
     );
