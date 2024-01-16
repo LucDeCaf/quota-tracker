@@ -14,6 +14,12 @@ export type Quota = {
 };
 
 const DEFAULT_VIEW = "table";
+const VALID_DAYS = ["day1", "day2", "day3"] as ("day1" | "day2" | "day3")[];
+const VALID_DAYS_REVERSED = ["day3", "day2", "day1"] as (
+    | "day1"
+    | "day2"
+    | "day3"
+)[];
 
 export default function App() {
     const [quotas, setQuotas] = useState<Quota[]>([]);
@@ -43,12 +49,28 @@ export default function App() {
     );
 
     let totalSold = 0;
-    let totalOnShip = 0;
+    let totalCollected = 0;
 
-    quotas.forEach((quota) => {
+    let foundNumber = false;
+    let dayCount = 0;
+
+    for (let quota of quotas) {
+        for (let day of VALID_DAYS_REVERSED) {
+            if (quota[day] === 0) {
+                if (!foundNumber) continue;
+            }
+
+            foundNumber = true;
+
+            dayCount++;
+
+            totalCollected += quota[day];
+        }
         totalSold += quota.sold;
-        totalOnShip += quota.day1 + quota.day2 + quota.day3 - quota.sold;
-    });
+    }
+
+    const totalOnShip = totalCollected - totalSold;
+    const averagePerDay = dayCount === 0 ? 0 : totalCollected / dayCount;
 
     let view: JSX.Element;
 
@@ -67,16 +89,33 @@ export default function App() {
                 <div className="flex justify-between">
                     <h1 className="font-mono text-4xl">Quota Tracker</h1>
                     <div className="flex gap-4 font-mono">
-                        <Options viewKind={viewKind} viewKindSetter={setViewKind} />
+                        <Options
+                            viewKind={viewKind}
+                            viewKindSetter={setViewKind}
+                        />
                         <Button variant="outline" onClick={() => setQuotas([])}>
                             Clear
                         </Button>
                     </div>
                 </div>
 
-                <div className="font-mono text-2xl">
-                    <p>Total On Ship: {totalOnShip}</p>
-                    <p>Total Sold: &nbsp;&nbsp;&nbsp;{totalSold}</p>
+                <div className="grid grid-cols-1 gap-6 font-mono text-2xl md:gap-x-12 md:grid-cols-2 2xl:grid-cols-4">
+                    <p className="flex justify-between">
+                        <span>Total On Ship:</span>
+                        <span>{totalOnShip}</span>
+                    </p>
+                    <p className="flex justify-between">
+                        <span>Total Sold:</span>
+                        <span>{totalSold}</span>
+                    </p>
+                    <p className="flex justify-between">
+                        <span>Total Collected:</span>
+                        <span>{totalCollected}</span>
+                    </p>
+                    <p className="flex justify-between">
+                        <span>Average Per Day:</span>
+                        <span>{averagePerDay.toFixed(2)}</span>
+                    </p>
                 </div>
 
                 <Button
