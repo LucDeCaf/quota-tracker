@@ -1,6 +1,6 @@
 # Quota Tracker
 
-A simple website with a simple goal - make speedruns not have to rely on clunky spreadsheets or jank scans.
+A simple website with a simple goal - make speedruns not have to rely on Excel spreadsheets or clunky scans.
 
 ## Suggesting changes
 
